@@ -582,48 +582,56 @@ function backgroundChange(sunriseTime, sunsetTime, localTime) {
   }
 }
 
+async function fetchLocationUsingIP() {
+  try {
+    const response = await fetch("http://ip-api.com/json");
+    const data = await response.json();
+
+    if (data.status === "success") {
+      return `${data.city}, ${data.country}`;
+    } else {
+      console.error("Unable to fetch location using IP:", data.message);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching location using IP:", error);
+    return null;
+  }
+}
+
 async function handleLocation() {
   let location = localStorage.getItem("city");
 
   try {
-    if (location === null) {
-      const city = await fetchLocationUsingIP();
-      // console.log("Location fetched:", city);
-      await getWeather(city);
-      // console.log("Weather fetched for the location");
+    if (location === null || location === "undefined") {
+      const ipCity = await fetchLocationUsingIP();
+      if (ipCity) {
+        console.log("Location fetched:", ipCity);
+        await getWeather(ipCity);
+        // console.log("Weather fetched for the location");
+      } else {
+        // console.error("Location is not available.");
+      }
     } else {
-      // console.log("Using saved location:", location);
+      console.log("Using saved location:", location);
       await getWeather(location);
       // console.log("Weather fetched for the saved location");
     }
   } catch (error) {
+    showWarningMessage("Unable to fetch location");
     console.error("Error:", error);
-  }
-}
-
-async function fetchLocationUsingIP() {
-  try {
-    const response = await fetch("https://api.ipify.org?format=json");
-    const data = await response.json();
-    const ipAddress = data.ip;
-
-    const ipcity = await getLocation(ipAddress);
-    localStorage.setItem("city", `${ipcity}`);
-    return ipcity;
-  } catch (error) {
-    console.error("Error:", error);
-    throw error;
   }
 }
 
 async function getLocation(ipAddress) {
   try {
-    const response = await fetch(`http://ip-api.com/json/${ipAddress}`);
+    const response = await fetch(`https://ip-api.com/json/${ipAddress}`);
     const data = await response.json();
     if (data.status === "success") {
       return `${data.city} ${data.country}`;
     }
   } catch (error) {
     console.error("Error:", error);
+    throw error;
   }
 }
