@@ -13,6 +13,7 @@ let setAlarmButton = document.getElementById("set-alarm-button");
 
 let searchInput = document.getElementById("search-input");
 let submitButton = document.getElementById("submit-button");
+let suggestionsContainer = document.getElementById("suggestions");
 
 let cityElement = document.getElementById("city");
 let lastUpdatedElement = document.getElementById("last-updated");
@@ -472,12 +473,61 @@ function createAlarmElement(key, value, alarmTime) {
   alarmTodo.appendChild(setAlarmText);
 }
 
+searchInput.addEventListener("input", () => {
+  const userInput = searchInput.value;
+  fetchSuggestions(userInput);
+});
+
+searchInput.addEventListener("keydown", (event) => {
+  if (event.key === "Backspace" && searchInput.value.trim() === "") {
+    suggestionsContainer.style.display = "none";
+  }
+});
+async function fetchSuggestions(userInput) {
+  const apiUrl = `https://api.geoapify.com/v1/geocode/autocomplete?text=${userInput}&apiKey=fd60bc23d3d1430db90e37cfcb88d1c7`;
+
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    displaySuggestions(data.features);
+  } catch (error) {
+    console.error("Error fetching suggestions:", error);
+  }
+}
+
+function displaySuggestions(suggestions) {
+  if (suggestions.length === 0) {
+    suggestionsContainer.style.display = "none";
+    return;
+  }
+  suggestionsContainer.innerHTML = "";
+
+  suggestions.forEach((suggestion) => {
+    const suggestionDiv = document.createElement("div");
+    suggestionDiv.textContent = `${suggestion.properties.formatted}`;
+    suggestionDiv.addEventListener("click", () => {
+      searchInput.value = suggestion.properties.formatted;
+      suggestionsContainer.innerHTML = "";
+      suggestionsContainer.style.display = "none";
+    });
+    suggestionsContainer.appendChild(suggestionDiv);
+  });
+
+  suggestionsContainer.style.display = "block";
+}
+
 submitButton.addEventListener("click", () => {
   let city = searchInput.value;
   localStorage.setItem("city", city);
   getWeather(city);
   searchInput.value = "";
+  suggestionsContainer.style.display = "none";
 });
+
 function getWeather(city) {
   let weatherData;
   fetch(
@@ -512,7 +562,8 @@ function getWeather(city) {
       backgroundChange(sunrise, sunset, localTime);
     })
     .catch((error) => {
-      showWarningMessage("Something went wrong.");
+      // showWarningMessage("Something went wrong.");
+      showWarningMessage("Unable to get weather");
       console.error("There was a problem with the fetch operation:", error);
     });
 }
@@ -582,19 +633,22 @@ function backgroundChange(sunriseTime, sunsetTime, localTime) {
   }
 }
 
-async function fetchLocationUsingIP() {
+async function fetchLocationUsingGeoapify() {
   try {
-    const response = await fetch("http://ip-api.com/json");
+    const response = await fetch(
+      "https://api.geoapify.com/v1/ipinfo?&apiKey=fd60bc23d3d1430db90e37cfcb88d1c7"
+    );
     const data = await response.json();
 
-    if (data.status === "success") {
-      return `${data.city}, ${data.country}`;
+    if (data.city && data.country) {
+      return `${data.city.names.en}, ${data.country.names.en}`;
     } else {
-      console.error("Unable to fetch location using IP:", data.message);
+      console.error("Unable to fetch location using Geoapify:", data.message);
       return null;
     }
   } catch (error) {
-    console.error("Error fetching location using IP:", error);
+    showWarningMessage("Error fetching location using Geoapify");
+    console.error("Error fetching location using Geoapify:", error);
     return null;
   }
 }
@@ -603,35 +657,20 @@ async function handleLocation() {
   let location = localStorage.getItem("city");
 
   try {
-    if (location === null || location === "undefined") {
-      const ipCity = await fetchLocationUsingIP();
-      if (ipCity) {
-        console.log("Location fetched:", ipCity);
-        await getWeather(ipCity);
-        // console.log("Weather fetched for the location");
+    if (!location || location === "undefined") {
+      const geoapifyLocation = await fetchLocationUsingGeoapify();
+      if (geoapifyLocation) {
+        console.log("Location fetched:", geoapifyLocation);
+        await getWeather(geoapifyLocation);
       } else {
-        // console.error("Location is not available.");
+        console.error("Location is not available.");
       }
     } else {
       console.log("Using saved location:", location);
       await getWeather(location);
-      // console.log("Weather fetched for the saved location");
     }
   } catch (error) {
-    showWarningMessage("Unable to fetch location");
+    showWarningMessage("Unable to get weather");
     console.error("Error:", error);
-  }
-}
-
-async function getLocation(ipAddress) {
-  try {
-    const response = await fetch(`https://ip-api.com/json/${ipAddress}`);
-    const data = await response.json();
-    if (data.status === "success") {
-      return `${data.city} ${data.country}`;
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    throw error;
   }
 }

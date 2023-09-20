@@ -434,6 +434,36 @@ body {
   background-color: #ffffff;
   color: #007bff;
 }
+#suggestions {
+  display: none;
+  margin-left: 1.45%;
+  position: absolute;
+  z-index: 1000;
+  max-height: 20%;
+  overflow-y: auto;
+  width: 27.5%;
+  border: 1px solid #ccc;
+  background-color: #faf5f5d5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#suggestions div {
+  flex: 1;
+  font-size: 1.13958vw;
+  /* background: linear-gradient(to right, #fbd786, #f7797d); */
+
+  color: rgb(0, 0, 0);
+  text-align: left;
+  padding: 0.52083vw;
+  border-bottom: 2px solid #555;
+  transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+#suggestions div:hover {
+  background-color: #f0f0f0;
+}
 
 #weather-container {
   padding: 1.30208vw;
@@ -885,11 +915,17 @@ button {
   #main-container {
     height: 46.00651vw;
   }
+  #suggestions {
+    max-height: 35%;
+  }
 }
 
 @media (min-width: 1250px) and (max-width: 1739px) {
   #main-container {
     height: 46.50651vw;
+  }
+  #suggestions {
+    max-height: 25%;
   }
 }
 
@@ -937,6 +973,9 @@ button {
     width: 140px;
     margin-left: 35px;
     font-size: 1rem;
+  }
+  #suggestions {
+    max-height: 20%;
   }
 }
 
@@ -1193,6 +1232,36 @@ button {
     padding: 0% 0.01%;
     /* margin-top: 20px; */
     overflow: hidden;
+  }
+  #suggestions {
+    display: none;
+    margin-left: 2.1%;
+    position: absolute;
+    z-index: 1000;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 28.7%;
+    border: 1px solid #ccc;
+    background-color: #faf5f5d5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  #suggestions div {
+    flex: 1;
+    font-size: 1.7vw;
+    /* background: linear-gradient(to right, #fbd786, #f7797d); */
+
+    color: rgb(0, 0, 0);
+    text-align: left;
+    padding: 0.52083vw;
+    border-bottom: 2px solid #555;
+    transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    z-index: 10000;
+  }
+
+  #suggestions div:hover {
+    background-color: #f0f0f0;
   }
   #weather-container {
     height: 43.5vw;
