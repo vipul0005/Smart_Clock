@@ -1166,7 +1166,7 @@ button {
 
   #hourInput::placeholder,
   #minInput::placeholder {
-    font-size: 6.54583vw;
+    font-size: 5.54583vw;
     color: rgb(191, 188, 185);
     width: 14.033333vw;
     /* border: 2px solid white; */
