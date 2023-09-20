@@ -4,7 +4,7 @@ Welcome to the Smart Clock, a web application that provides various functionalit
 
 ## Hosted Link
 
-Check out the live application: [Smart Clock App]<(smartclockbyme.netlify.app)>
+Check out the live application: [Smart Clock App](https://smartclockbyme.netlify.app/)
 
 ## Technologies Used
 
