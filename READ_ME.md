@@ -39,4 +39,4 @@ Feel free to replace `<Your hosted link>` with the actual link where your Smart 
 
 If you'd like to contribute to this project, feel free to fork the repository and submit a pull request. You can also open issues for bug reports or feature requests.
 
-[Your Hosted Link](<Your hosted link>)
+[Hosted Link](https://smartclockbyme.netlify.app/)
