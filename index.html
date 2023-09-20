@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Clock</title>
+    <link rel="icon" href="data:," />
+    <script
+      src="https://kit.fontawesome.com/8281cb5644.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="title-container">
+      <h1>Smart Clock</h1>
+    </div>
+
+    <div id="main-container">
+      <div id="outer-container">
+        <div id="inner-container">
+          <div id="inner-border">
+            <span id="text">Computer Century Calander </span>
+            <span id="logo-text">CASIO</span>
+
+            <div id="date-container">
+              <div id="date-text">
+                <span>Date</span>
+                <span>Month</span>
+                <span>Year</span>
+              </div>
+
+              <div id="date-input">
+                <span id="date">--</span>
+                <span id="month">--</span>
+                <span id="year">----</span>
+              </div>
+            </div>
+
+            <div id="time-container">
+              <div id="time-text">
+                <span>Hour</span>
+                <span class="hidden">:</span>
+                <span>Minute</span>
+                <span class="hidden">:</span>
+                <span id="second-text">Second</span>
+              </div>
+
+              <div id="time-input">
+                <span id="hours">--</span>
+                <span class="blink">:</span>
+                <span id="minutes">--</span>
+                <span class="blink">:</span>
+                <span id="seconds">--</span>
+              </div>
+            </div>
+
+            <div id="misc">
+              <div id="temp-input">
+                <span id="temp">--°C</span>
+                <span id="day">---</span>
+              </div>
+
+              <div id="temp-text">
+                <span>Temp.</span>
+                <span>Day</span>
+              </div>
+            </div>
+
+            <div id="alarm-container">
+              <div id="alarm-heading">
+                <h1>Alarm:</h1>
+              </div>
+
+              <div id="set-alarm-container">
+                <div id="alarm-text">
+                  <span>Hour</span>
+                  <span>Minute </span>
+                </div>
+                <div id="alarm-input">
+                  <input
+                    type="number"
+                    id="hourInput"
+                    min="0"
+                    max="23"
+                    inputmode="numeric"
+                    placeholder="0-23"
+                  />
+                  <input
+                    type="number"
+                    id="minInput"
+                    min="0"
+                    max="59"
+                    inputmode="numeric"
+                    placeholder="0-59"
+                  />
+                </div>
+              </div>
+              <button id="set-alarm-button">Set Alarm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="input-box-container">
+        <div id="weather-background">
+          <div id="search-container">
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Enter your City, Country"
+              name="query"
+            />
+            <button type="button" id="submit-button">Submit</button>
+          </div>
+
+          <div id="weather-container">
+            <h1 id="city">City</h1>
+            <div id="last-updated">Last Updated: Now</div>
+            <div id="weather-info">
+              <img id="weather-icon" src="" alt="Weather Icon" />
+              <div id="condition-text">Condition</div>
+            </div>
+            <div id="temperature">
+              <div id="temp1">0°C</div>
+              <div id="feels-like">Feels Like 0°C</div>
+            </div>
+            <div id="extra-info">
+              <div id="precipitation">Precipitation: 0mm</div>
+              <div id="wind">Wind: 0 km/h</div>
+              <div id="humidity">Humidity: 0%</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="alarm-todo">
+          <div id="alarm-todo-text">
+            <i class="fa-solid fa-bell" style="color: #ffffff"></i>
+            <h1>
+              </i> Alarms
+            </h1>
+          </div>
+          <div id="alarm-todo-list-container" class="scrollable"></div>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
