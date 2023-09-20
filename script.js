@@ -253,7 +253,7 @@ window.addEventListener("load", () => {
   handleLocation();
 
   // Call handleLocation every 1000 milliseconds (1 second)
-  setInterval(handleLocation, 60000);
+  setInterval(handleLocation, 600000);
 });
 
 function clock() {
