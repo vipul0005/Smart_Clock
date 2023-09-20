@@ -582,14 +582,22 @@ function backgroundChange(sunriseTime, sunsetTime, localTime) {
   }
 }
 
-function handleLocation() {
+async function handleLocation() {
   let location = localStorage.getItem("city");
-  console.log(location);
-  if (location) {
-    getWeather(location);
-  }
-  if (location == null) {
-    fetchLocationUsingIP();
+
+  try {
+    if (location === null) {
+      const city = await fetchLocationUsingIP();
+      // console.log("Location fetched:", city);
+      await getWeather(city);
+      // console.log("Weather fetched for the location");
+    } else {
+      // console.log("Using saved location:", location);
+      await getWeather(location);
+      // console.log("Weather fetched for the saved location");
+    }
+  } catch (error) {
+    console.error("Error:", error);
   }
 }
 
@@ -601,8 +609,10 @@ async function fetchLocationUsingIP() {
 
     const ipcity = await getLocation(ipAddress);
     localStorage.setItem("city", `${ipcity}`);
+    return ipcity;
   } catch (error) {
     console.error("Error:", error);
+    throw error;
   }
 }
 
